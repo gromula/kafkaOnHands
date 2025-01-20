@@ -1,4 +1,4 @@
-const { Kafka } = require('kafkajs');
+import { Kafka } from 'kafkajs';
 
 const kafka = new Kafka({
   clientId: 'my-app',
@@ -20,6 +20,11 @@ const consumer = kafka.consumer({ groupId: 'main-group' });
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       try {
+        if (message.value === null) {
+          console.error('Received a null message value');
+          return;
+        }
+
         console.log(`Received message: ${message.value.toString()}`);
 
         const data = JSON.parse(message.value.toString());
@@ -30,6 +35,11 @@ const consumer = kafka.consumer({ groupId: 'main-group' });
         console.log('Message processed successfully:', data);
       } catch (error) {
         console.error('Error processing message:', error.message);
+
+        if (message.value === null) {
+          console.error('Received a null message value');
+          return;
+        }
 
         await producer.send({
           topic: deadLetterTopic,

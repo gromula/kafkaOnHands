@@ -8,7 +8,6 @@ const kafka = new Kafka({
 
 // Topics and group details
 const mainTopic = 'main-topic';
-const deadLetterTopic = 'dead-letter-topic';
 const groupId = 'manual-offset-dlq-group';
 
 // Create producer and consumer

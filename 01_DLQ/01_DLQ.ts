@@ -18,7 +18,7 @@ const consumer = kafka.consumer({ groupId: 'main-group' });
   await consumer.subscribe({ topic: mainTopic, fromBeginning: true });
 
   await consumer.run({
-    eachMessage: async ({ topic, partition, message }) => {
+    eachMessage: async ({ message }) => {
       try {
         if (message.value === null) {
           console.error('Received a null message value');
